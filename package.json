@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npx tsc -w",
-    "1": "node ./1/1.js"
+    "1": "node ./1/1.js",
+    "2": "node ./2/2.js"
   },
   "repository": {
     "type": "git",
