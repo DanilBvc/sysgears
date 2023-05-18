@@ -1,0 +1,25 @@
+{
+  "name": "sysgears",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "npx tsc -w",
+    "1": "node ./1/1.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanilBvc/sysgears.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanilBvc/sysgears/issues"
+  },
+  "homepage": "https://github.com/DanilBvc/sysgears#readme",
+  "devDependencies": {
+    "@types/node": "^20.2.1",
+    "typescript": "^5.0.4"
+  }
+}
