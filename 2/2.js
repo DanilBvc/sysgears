@@ -10,6 +10,7 @@ function filterAndSortData() {
     const conditionInclude = jsonData.condition.include;
     const conditionExclude = jsonData.condition.exclude;
     const conditionSortBy = jsonData.condition.sortBy;
+    const additionalFilters = jsonData.condition.additionalFilters;
     if (conditionInclude) {
         result = result.filter((item) => {
             for (const includeItem of conditionInclude) {
@@ -31,6 +32,17 @@ function filterAndSortData() {
                     if (item[key] === excludeItem[key]) {
                         return false;
                     }
+                }
+            }
+            return true;
+        });
+    }
+    if (additionalFilters) {
+        result = result.filter((item) => {
+            for (const filter of additionalFilters) {
+                const { key, value } = filter;
+                if (item[key] !== value) {
+                    return false;
                 }
             }
             return true;

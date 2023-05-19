@@ -3,11 +3,16 @@ import fs from "fs";
 interface DataObject {
   [key: string]: any;
 }
+interface AdditionalFilter {
+  key: string;
+  value: any;
+}
 
 interface Condition {
   include?: DataObject[];
   exclude?: DataObject[];
   sortBy?: string[];
+  additionalFilters?: AdditionalFilter[]
 }
 
 interface Result {
@@ -25,6 +30,8 @@ function filterAndSortData(): Result {
   const conditionInclude = jsonData.condition.include;
   const conditionExclude = jsonData.condition.exclude;
   const conditionSortBy = jsonData.condition.sortBy;
+  const additionalFilters = jsonData.condition.additionalFilters;
+
 
   if (conditionInclude) {
     result = result.filter((item) => {
@@ -48,6 +55,18 @@ function filterAndSortData(): Result {
           if (item[key] === excludeItem[key]) {
             return false;
           }
+        }
+      }
+      return true;
+    });
+  }
+
+  if (additionalFilters) {
+    result = result.filter((item) => {
+      for (const filter of additionalFilters) {
+        const { key, value } = filter;
+        if (item[key] !== value) {
+          return false;
         }
       }
       return true;
