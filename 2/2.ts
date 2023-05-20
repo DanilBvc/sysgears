@@ -61,17 +61,7 @@ function filterAndSortData(): Result {
     });
   }
 
-  if (additionalFilters) {
-    result = result.filter((item) => {
-      for (const filter of additionalFilters) {
-        const { key, value } = filter;
-        if (item[key] !== value) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }
+
 
   if (conditionSortBy) {
     result = result.sort((a, b) => {
@@ -80,6 +70,19 @@ function filterAndSortData(): Result {
         if (a[key] > b[key]) return 1;
       }
       return 0;
+    });
+  }
+
+  if (additionalFilters) {
+    result = result.filter((item) => {
+      for (const filter of additionalFilters) {
+        const key = Object.keys(filter)[0]
+        const value = Object.values(filter)[0]
+        if (item[key] === value) {
+          return false;
+        }
+      }
+      return true;
     });
   }
 

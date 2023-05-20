@@ -1,13 +1,13 @@
 {
   "result": [
     {
-      "user": "greg@mail.com",
-      "rating": 40,
+      "user": "john1@mail.com",
+      "rating": 30,
       "disabled": false
     },
     {
-      "user": "mike@mail.com",
-      "rating": 20,
+      "user": "greg@mail.com",
+      "rating": 40,
       "disabled": false
     }
   ]

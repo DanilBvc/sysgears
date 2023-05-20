@@ -1,1 +1,1 @@
-{ "distance": { "unit": "km", "value": 0.5 }, "convertTo": "m" }
+{ "distance": { "unit": "yd", "value": 500 }, "convertTo": "km" }
