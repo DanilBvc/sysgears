@@ -6,6 +6,11 @@
       "disabled": false
     },
     {
+      "user": "john2@mail.com",
+      "rating": 35,
+      "disabled": false
+    },
+    {
       "user": "greg@mail.com",
       "rating": 40,
       "disabled": false

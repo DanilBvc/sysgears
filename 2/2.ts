@@ -1,6 +1,7 @@
 import fs from "fs";
+import filters from './conditions/filters';
 
-interface DataObject {
+export interface DataObject {
   [key: string]: any;
 }
 interface AdditionalFilter {
@@ -19,7 +20,7 @@ interface Result {
   result: DataObject[];
 }
 
-interface JSONData {
+export interface JSONData {
   data: DataObject[];
   condition: Condition;
 }
@@ -27,70 +28,12 @@ interface JSONData {
 function filterAndSortData(): Result {
   const jsonData: JSONData = require("./inputData/data.json");
   let result: DataObject[] = [...jsonData.data];
-  const conditionInclude = jsonData.condition.include;
-  const conditionExclude = jsonData.condition.exclude;
-  const conditionSortBy = jsonData.condition.sortBy;
-  const additionalFilters = jsonData.condition.additionalFilters;
-
-
-  if (conditionInclude) {
-    result = result.filter((item) => {
-      for (const includeItem of conditionInclude) {
-        const keys = Object.keys(includeItem);
-        for (const key of keys) {
-          if (item[key] !== includeItem[key]) {
-            return false;
-          }
-        }
-      }
-      return true;
-    });
-  }
-
-  if (conditionExclude) {
-    result = result.filter((item) => {
-      for (const excludeItem of conditionExclude) {
-        const keys = Object.keys(excludeItem);
-        for (const key of keys) {
-          if (item[key] === excludeItem[key]) {
-            return false;
-          }
-        }
-      }
-      return true;
-    });
-  }
-
-
-
-  if (conditionSortBy) {
-    result = result.sort((a, b) => {
-      for (const key of conditionSortBy) {
-        if (a[key] < b[key]) return -1;
-        if (a[key] > b[key]) return 1;
-      }
-      return 0;
-    });
-  }
-
-  if (additionalFilters) {
-    result = result.filter((item) => {
-      for (const filter of additionalFilters) {
-        const key = Object.keys(filter)[0]
-        const value = Object.values(filter)[0]
-        if (item[key] === value) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }
-
+  const filtersArray = Object.values(filters)
+  result = filtersArray.reduce((acc, filter) => filter(acc), result);
   const jsonDataResult = JSON.stringify({ result }, null, 2);
   fs.writeFileSync("./2/outputData/output.json", jsonDataResult);
 
   return { result };
 }
-
 const result: Result = filterAndSortData();
 console.log(result);

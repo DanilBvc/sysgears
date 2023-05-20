@@ -9,9 +9,6 @@
   "condition": {
     "exclude": [{ "disabled": true }],
     "sortBy": ["rating"],
-    "additionalFilters": [
-      { "user": "mike@mail.com" },
-      { "user": "john2@mail.com" }
-    ]
+    "additionalFilters": [{ "user": "mike@mail.com" }]
   }
 }

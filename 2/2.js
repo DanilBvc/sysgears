@@ -4,62 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
+const filters_1 = __importDefault(require("./conditions/filters"));
 function filterAndSortData() {
     const jsonData = require("./inputData/data.json");
     let result = [...jsonData.data];
-    const conditionInclude = jsonData.condition.include;
-    const conditionExclude = jsonData.condition.exclude;
-    const conditionSortBy = jsonData.condition.sortBy;
-    const additionalFilters = jsonData.condition.additionalFilters;
-    if (conditionInclude) {
-        result = result.filter((item) => {
-            for (const includeItem of conditionInclude) {
-                const keys = Object.keys(includeItem);
-                for (const key of keys) {
-                    if (item[key] !== includeItem[key]) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        });
-    }
-    if (conditionExclude) {
-        result = result.filter((item) => {
-            for (const excludeItem of conditionExclude) {
-                const keys = Object.keys(excludeItem);
-                for (const key of keys) {
-                    if (item[key] === excludeItem[key]) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        });
-    }
-    if (conditionSortBy) {
-        result = result.sort((a, b) => {
-            for (const key of conditionSortBy) {
-                if (a[key] < b[key])
-                    return -1;
-                if (a[key] > b[key])
-                    return 1;
-            }
-            return 0;
-        });
-    }
-    if (additionalFilters) {
-        result = result.filter((item) => {
-            for (const filter of additionalFilters) {
-                const key = Object.keys(filter)[0];
-                const value = Object.values(filter)[0];
-                if (item[key] === value) {
-                    return false;
-                }
-            }
-            return true;
-        });
-    }
+    const filtersArray = Object.values(filters_1.default);
+    result = filtersArray.reduce((acc, filter) => filter(acc), result);
     const jsonDataResult = JSON.stringify({ result }, null, 2);
     fs_1.default.writeFileSync("./2/outputData/output.json", jsonDataResult);
     return { result };
