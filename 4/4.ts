@@ -21,7 +21,7 @@ function getPaths(config: Question[]): PathsResult {
   const paths: Path[][] = [];
 
   function traverse(path: Path[], questionId: string) {
-    const currentQuestion = config.find((q) => q.questionId === questionId as any);
+    const currentQuestion = config.find((q) => q.questionId === questionId as unknown as Answer[]);
     if (!currentQuestion) {
       paths.push([...path]);
       return;
