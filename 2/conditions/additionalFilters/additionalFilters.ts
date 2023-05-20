@@ -1,7 +1,7 @@
+import { JSONData, DataObject } from '../../types/types';
 
 
 
-import { DataObject, JSONData } from '../../2';
 const jsonData: JSONData = require("../../inputData/data.json");
 const additionalFiltersFilter = (prevState: DataObject[]) => {
   const additionalFilters = jsonData.condition.additionalFilters;

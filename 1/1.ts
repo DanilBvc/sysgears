@@ -1,19 +1,11 @@
-const fs = require("fs")
-type ConversionRules = {
-  [unit: string]: {
-    [convertTo: string]: number;
-  };
-};
+import fs from "fs"
+import { convertArgumentsType, ConversionRules } from './types/types';
 
-type convertArgumentsType = {
-  distance: { unit: string; value: number },
-  convertTo: string
-}
+const argData: convertArgumentsType = require('./inputData/data.json');
+const units: ConversionRules = require('./contants/units.json');
 
 function convertDistance() {
-  const argData: convertArgumentsType = require('./inputData/data.json');
   const { distance, convertTo } = argData
-  const units: ConversionRules = require('./contants/units.json');
 
   if (!units[distance.unit] || !units[convertTo]) {
     throw new Error('Invalid units');

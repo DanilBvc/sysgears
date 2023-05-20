@@ -1,21 +1,6 @@
 import fs from "fs"
-interface Question {
-  [question: string]: Answer[];
-}
+import { Question, PathsResult, Path, Answer } from './types/types';
 
-interface Answer {
-  answer: string;
-  nextQuestionId: string | null;
-}
-
-interface Path {
-  [question: string]: string;
-}
-
-interface PathsResult {
-  number: number;
-  list: Path[][];
-}
 
 function getPaths(config: Question[]): PathsResult {
   const paths: Path[][] = [];

@@ -1,19 +1,5 @@
 import fs from "fs"
-interface Coordinate {
-  x: number;
-  y: number;
-  z: number;
-}
-
-interface ProbeResult {
-  count: number;
-  coordinates: Coordinate[];
-}
-
-interface Result {
-  location: Coordinate;
-  probes: ProbeResult;
-}
+import { Coordinate } from './types/types';
 
 function generateRandomCoordinate(): Coordinate {
   const coordinate: Coordinate = {

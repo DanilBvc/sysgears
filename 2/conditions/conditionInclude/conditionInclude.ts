@@ -1,4 +1,5 @@
-import { DataObject, JSONData } from '../../2';
+import { JSONData, DataObject } from '../../types/types';
+
 const jsonData: JSONData = require("../../inputData/data.json");
 const conditionIncludeFilter = (prevState: DataObject[]) => {
   const conditionInclude = jsonData.condition.include;

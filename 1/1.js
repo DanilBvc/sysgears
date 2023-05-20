@@ -1,9 +1,13 @@
 "use strict";
-const fs = require("fs");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const argData = require('./inputData/data.json');
+const units = require('./contants/units.json');
 function convertDistance() {
-    const argData = require('./inputData/data.json');
     const { distance, convertTo } = argData;
-    const units = require('./contants/units.json');
     if (!units[distance.unit] || !units[convertTo]) {
         throw new Error('Invalid units');
     }
@@ -14,7 +18,7 @@ function convertDistance() {
         value: roundToTwoDecimalPlaces(convertedValue),
     };
     const jsonData = JSON.stringify(result, null, 2);
-    fs.writeFileSync('./1/outputData/output.json', jsonData);
+    fs_1.default.writeFileSync('./1/outputData/output.json', jsonData);
     return result;
 }
 function roundToTwoDecimalPlaces(value) {

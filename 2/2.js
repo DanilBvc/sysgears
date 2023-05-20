@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const filters_1 = __importDefault(require("./conditions/filters"));
+const jsonData = require("./inputData/data.json");
 function filterAndSortData() {
-    const jsonData = require("./inputData/data.json");
     let result = [...jsonData.data];
     const filtersArray = Object.values(filters_1.default);
     result = filtersArray.reduce((acc, filter) => filter(acc), result);

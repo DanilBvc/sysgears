@@ -1,6 +1,6 @@
+import { JSONData, DataObject } from '../../types/types';
 
 
-import { DataObject, JSONData } from '../../2';
 const jsonData: JSONData = require("../../inputData/data.json");
 const conditionSortByFilter = (prevState: DataObject[]) => {
   const conditionSortBy = jsonData.condition.sortBy;
