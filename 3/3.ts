@@ -24,58 +24,77 @@ function generateRandomCoordinate(): Coordinate {
   return coordinate;
 }
 
-function calculateDistance(probe: Coordinate, asteroid: Coordinate): number {
-  const dx = Math.abs(probe.x - asteroid.x);
-  const dy = Math.abs(probe.y - asteroid.y);
-  const dz = Math.abs(probe.z - asteroid.z);
+function calculateDistance(probeCoordinates: { x: number; y: number; z: number }, asteroidCoordinates: { x: number; y: number; z: number }): number {
+  const dx = probeCoordinates.x - asteroidCoordinates.x;
+  const dy = probeCoordinates.y - asteroidCoordinates.y;
+  const dz = probeCoordinates.z - asteroidCoordinates.z;
+
   return Math.sqrt(dx * dx + dy * dy + dz * dz);
 }
 
-function findAsteroidLocation(): Result {
-  const asteroid: Coordinate = generateRandomCoordinate();
-  const probes: Coordinate[] = [];
-  const maxAttempts = 1000000;
-  const cubeSize = 100;
 
-  let probeCount = 0;
-  let closestProbe: Coordinate | null = null;
+function findAsteroidLocation() {
+  const asteroidCoordinates = generateRandomCoordinate();
 
-  for (let x = 0; x <= cubeSize; x += cubeSize / 2) {
-    for (let y = 0; y <= cubeSize; y += cubeSize / 2) {
-      for (let z = 0; z <= cubeSize; z += cubeSize / 2) {
-        const probe: Coordinate = { x, y, z };
-        const distance = calculateDistance(probe, asteroid);
-        probes.push(probe);
-        probeCount++;
+  function exploreCube(cube: { minX: number; minY: number; minZ: number; maxX: number; maxY: number; maxZ: number }, probes: Array<{ x: number; y: number; z: number }>) {
+    const xMid = Math.floor((cube.minX + cube.maxX) / 2);
+    const yMid = Math.floor((cube.minY + cube.maxY) / 2);
+    const zMid = Math.floor((cube.minZ + cube.maxZ) / 2);
 
-        if (distance === 0) {
-          closestProbe = probe;
-          break;
-        } else if (
-          closestProbe === null ||
-          distance < calculateDistance(closestProbe, asteroid)
-        ) {
-          closestProbe = probe;
-        }
+    const subCubes = [
+      { minX: cube.minX, minY: cube.minY, minZ: cube.minZ, maxX: xMid, maxY: yMid, maxZ: zMid },
+      { minX: xMid + 1, minY: cube.minY, minZ: cube.minZ, maxX: cube.maxX, maxY: yMid, maxZ: zMid },
+      { minX: cube.minX, minY: yMid + 1, minZ: cube.minZ, maxX: xMid, maxY: cube.maxY, maxZ: zMid },
+      { minX: xMid + 1, minY: yMid + 1, minZ: cube.minZ, maxX: cube.maxX, maxY: cube.maxY, maxZ: zMid },
+      { minX: cube.minX, minY: cube.minY, minZ: zMid + 1, maxX: xMid, maxY: yMid, maxZ: cube.maxZ },
+      { minX: xMid + 1, minY: cube.minY, minZ: zMid + 1, maxX: cube.maxX, maxY: yMid, maxZ: cube.maxZ },
+      { minX: cube.minX, minY: yMid + 1, minZ: zMid + 1, maxX: xMid, maxY: cube.maxY, maxZ: cube.maxZ },
+      { minX: xMid + 1, minY: yMid + 1, minZ: zMid + 1, maxX: cube.maxX, maxY: cube.maxY, maxZ: cube.maxZ },
+    ];
 
-        if (probeCount >= maxAttempts) {
-          break;
-        }
+    let closestCube;
+    let minDistance = Number.MAX_VALUE;
+
+    for (const subCube of subCubes) {
+      const probeCoordinates = {
+        x: Math.floor((subCube.minX + subCube.maxX) / 2),
+        y: Math.floor((subCube.minY + subCube.maxY) / 2),
+        z: Math.floor((subCube.minZ + subCube.maxZ) / 2),
+      };
+
+      const distance = calculateDistance(probeCoordinates, asteroidCoordinates);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestCube = subCube;
+      }
+    }
+
+    if (closestCube) {
+      probes.push({
+        x: Math.floor((closestCube.minX + closestCube.maxX) / 2),
+        y: Math.floor((closestCube.minY + closestCube.maxY) / 2),
+        z: Math.floor((closestCube.minZ + closestCube.maxZ) / 2),
+      });
+    }
+
+    if (minDistance === 0) {
+      return { count: probes.length, coordinates: probes };
+    } else {
+      if (closestCube) {
+        return exploreCube(closestCube, probes);
+      } else {
+        return { count: 0, coordinates: { x: 0, y: 0, z: 0, } } //nothing found
       }
     }
   }
 
-  return {
-    location: asteroid,
-    probes: {
-      count: probeCount,
-      coordinates: probes,
-    },
-  };
+  const result = exploreCube({ minX: 0, minY: 0, minZ: 0, maxX: 100, maxY: 100, maxZ: 100 }, []);
+  return { location: asteroidCoordinates, probes: { count: result.count, coordinates: result.coordinates } };
 }
 
 
-const result: Result = findAsteroidLocation();
+
+const result = findAsteroidLocation();
 
 
 fs.writeFileSync("./3/outputData/output.json", JSON.stringify(result, null, 2))
