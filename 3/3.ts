@@ -1,5 +1,5 @@
 import fs from "fs"
-import { Coordinate } from './types/types';
+import { Coordinate, Cube, ProbeResult } from './types/types';
 
 function generateRandomCoordinate(): Coordinate {
   const coordinate: Coordinate = {
@@ -10,7 +10,7 @@ function generateRandomCoordinate(): Coordinate {
   return coordinate;
 }
 
-function calculateDistance(probeCoordinates: { x: number; y: number; z: number }, asteroidCoordinates: { x: number; y: number; z: number }): number {
+function calculateDistance(probeCoordinates: Coordinate, asteroidCoordinates: Coordinate): number {
   const dx = probeCoordinates.x - asteroidCoordinates.x;
   const dy = probeCoordinates.y - asteroidCoordinates.y;
   const dz = probeCoordinates.z - asteroidCoordinates.z;
@@ -22,7 +22,7 @@ function calculateDistance(probeCoordinates: { x: number; y: number; z: number }
 function findAsteroidLocation() {
   const asteroidCoordinates = generateRandomCoordinate();
 
-  function exploreCube(cube: { minX: number; minY: number; minZ: number; maxX: number; maxY: number; maxZ: number }, probes: Array<{ x: number; y: number; z: number }>) {
+  function exploreCube(cube: Cube, probes: Coordinate[]): ProbeResult {
     const xMid = Math.floor((cube.minX + cube.maxX) / 2);
     const yMid = Math.floor((cube.minY + cube.maxY) / 2);
     const zMid = Math.floor((cube.minZ + cube.maxZ) / 2);

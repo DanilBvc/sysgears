@@ -4,12 +4,18 @@ export interface Coordinate {
   z: number;
 }
 
-export interface ProbeResult {
-  count: number;
-  coordinates: Coordinate[];
+export interface Cube {
+  minX: number;
+  minY: number;
+  minZ: number;
+  maxX: number;
+  maxY: number;
+  maxZ: number;
 }
 
-export interface Result {
-  location: Coordinate;
-  probes: ProbeResult;
+
+
+export interface ProbeResult {
+  count: number;
+  coordinates: Coordinate[] | Coordinate;
 }
